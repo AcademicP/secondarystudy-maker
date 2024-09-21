@@ -1,0 +1,15 @@
+@startuml
+
+node PC{
+[Browser]
+}
+node Frontend_Server{
+component ResearchMakerFrontend_Angular{
+  [angularCode]
+  database LocalStorage
+}
+
+Browser<->Frontend_Server
+
+angularCode--LocalStorage
+@enduml

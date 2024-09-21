@@ -1,0 +1,34 @@
+@startuml
+object Antecedent{
+  public title:string
+  public authors: string
+  public objective: string
+  public howto: string
+  public results: string
+  public url: string
+  public year: string
+}
+
+object Research{
+  public title:string
+  public context:string
+  public antecedents_summary:string
+  public problem_afirmative:string
+  public justification:string
+  public antecedents:Antecedent[]
+  public type:string
+  public objective:string
+  public problem:string
+  public hypothesis:string
+  public methodology:string
+  public results:string
+  public conclusion:string
+  public futurework:string
+  public introduction:string
+  public relatedWorkParagragh:string
+  public references:Antecedent[]
+}
+
+Research - Antecedent
+
+@enduml

@@ -1,0 +1,256 @@
+<div class="wrapper">
+    @if(viewmode=='edit'){
+    
+        <div class="row">
+            <label for="">Titulo:</label>
+            <input type="text" [(ngModel)]="research.title">
+        </div>
+        <div>
+            <label for="">Tipo: </label>
+            <select>
+                <option value="1">Mapeo Sistemático de Literatura</option>
+                <option value="2">Revision Sistemática de Literatura</option>
+            </select>
+        </div>
+        <div class="edit-block">
+            <h5>INTRODUCCION</h5>
+            <div class="row-flex">
+                <div><label for="">Contexto </label>
+                    <span> (Importancia del tema, estadisticas, beneficios, desventajas, otros)</span>
+                    </div>
+                <textarea [(ngModel)]="research.context"></textarea>    
+            </div>
+            <div class="row-flex">
+                <div>
+                    <label for="">Resumen de Antecedentes </label>
+                    <span>(En una sola frase explicar los antecedentes de la parte inferior)</span>
+    
+                </div>
+                <textarea [(ngModel)]="research.antecedents_summary"></textarea>    
+            </div>
+            <div class="row-flex">
+                <div>
+                    <label for="">Objetivo</label>
+                    <span>(*Actualiza automaticamente el problema e hipotesis)</span>
+                </div>
+                
+                <textarea [(ngModel)]="research.objective" (blur)="changeObjective()"></textarea>    
+            </div>
+            <div class="row-flex">
+                <div>
+                    <label for="">Problema </label>
+                    <span>(* Actualiza automaticamente al objetivo e hipotesis)</span>
+                </div>
+                <textarea [(ngModel)]="research.problem" (blur)="changeProblem()"></textarea>    
+            </div>
+            <div class="row-flex">
+                <div>
+                    <label for="">Justificacion </label>
+                    <span> (Escribir 1 linea del por qué seria importante los resultados de este trabajo)</span>
+                </div>
+                <textarea [(ngModel)]="research.justification"></textarea>    
+            </div>
+            
+            
+        </div>
+        
+        <div style="margin-top:20px">
+            <label>Tabla Antecedentes</label>
+            <table class="antecedents">
+                <thead>
+                    <tr>
+                        <th class="large">Titulo</th>
+                        <th style="min-width:100px">Autores</th>
+                        <th style="min-width:50px">Año</th>
+                        <th class="large">¿Qué quisieron Hacer?</th>
+                        <th class="large">¿Como lo hicieron?</th>
+                        <th class="large">¿Que resultados obtuvieron?</th>
+                        <th class="large">URL</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        @for(antecedent of research.antecedents; track antecedent.title){
+                        <tr>
+                            <td><textarea [(ngModel)]="antecedent.title"></textarea> </td>
+                            <td><textarea [(ngModel)]="antecedent.authors"></textarea> </td>
+                            <td><textarea [(ngModel)]="antecedent.year"></textarea> </td>
+                            <td><textarea [(ngModel)]="antecedent.objective"></textarea> </td>
+                            <td><textarea [(ngModel)]="antecedent.howto"></textarea></td>
+                            <td><textarea [(ngModel)]="antecedent.results"></textarea></td>
+                            <td><textarea [(ngModel)]="antecedent.url"></textarea> </td>
+                            <td><button (click)="addAntecedentRow()" mat-button>+</button></td>
+                        </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+        <br /><br />
+        <div class="edit-block">
+            <div class="row-flex">
+                <div>
+                    <label>Metodología </label>
+                    <span>(Defina las preguntas de investigación, la cadena de busqueda, las fuentes da datos, los criterios de inclusion y exclusion, y las fasees de aplciacion. )</span>
+                </div>
+                <br>
+                <div>
+                    <label for="">Preguntas de Investigación </label>
+                    <span>(Preguntas de investigacion bibliometricas: ¿Quienes son los autores que mas publican?, ¿En que revistas se han publicado?, ¿Como ha sido la evolucion de publicacion a lo largo de los años?  y preguntas especificas: ¿Cuales son las herramientas mas estudiadas? ¿Cuales son los desafios encontrados? )</span>
+                </div>
+
+                <ul>
+                    <li>RQ1. <input type="text"> </li> <button>Agregar</button>
+                </ul>
+
+                <div>
+                    <label for="">Cadena de Busqueda </label>
+                    <span> (Se aplica la tecnica PICOC)</span>
+                </div>
+
+                <div>
+                    <label for="">P (Población) (?) </label> <input type="text" placeholder="DevOps">
+                    <label for="">I (Intervencion) (?) </label> <input type="text" placeholder="Testing">
+                    <label for="">C (Comparacion) (?) </label> <input type="text" placeholder="-">
+                    <label for="">O (Resultados) (?) </label> <input type="text" placeholder="Tecnicas">
+                    <label for="">C (Contexto) (?) </label> <input type="text" placeholder="Academico">
+                </div>
+
+                <div>
+                    <label for="">Fuentes de datos </label>
+                    <span> (Las librerias de donde aplicara la cadena busqueda: IEEE Xplorer, Scopus, WebOfScience, ACM, SpringerLink, Francis Tayler, etc )</span>
+                </div>
+
+                <ul>
+                    <li> <input type="text" placeholder="IEEE Xplorer"> </li> <button>Agregar</button>
+                </ul>
+
+                <div>
+                    <label for="">Criterios de Inclusion y Exclusión</label>
+                    <span> (Criterios que se aplicaran a cada estudio encontrado) (?)  </span>
+                </div>
+
+                <ul>
+                    <li> CI1. <input type="text" placeholder=""> </li> <button>Agregar</button>
+                </ul>
+
+                <ul>
+                    <li> CE1. <input type="text" placeholder="trabjo no esta en ingles"> </li> <button>Agregar</button>
+                </ul>
+
+                <div>
+                    <label for="">Fases</label>
+                    <span> definir en que fase se aplica cada criterio. </span>
+                </div>
+                <table>
+                    <tr>
+                        <th>Fase 1</th><td> CI1, CE1 </td> <td> <button>Agregar</button> </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="row-flex">
+                <div>
+                    <label>Resultados y discusión </label>
+                    <span>(Explique los resultados incluyendo discusiones con sus antecedente.)</span>
+                </div>
+                <textarea [(ngModel)]="research.results"></textarea>
+            </div>
+            <div class="row-flex">
+                <div>
+                    <label>Conclusiones </label>
+                    <span>(Explique las conclusiones de su trabajo)</span>
+                </div>
+                <textarea [(ngModel)]="research.conclusion"></textarea>
+            </div>
+            <div class="row-flex">
+                <div>
+                    <label>Trabajos Futuros </label>
+                    <span>(Redacte los siguientes trabajos que se pueden realizar para continuar con su investigación.)</span>
+                </div>
+                <textarea [(ngModel)]="research.futurework"></textarea>
+            </div>
+
+            <div class="row-flex">
+                <label>Referencias</label>
+                <ul>
+                    @for(reference of research.references; track reference.title){
+                        <li>{{reference.authors}}.{{reference.title}}</li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+    }
+    @else{
+    <div id="contentToConvert" class="preview-mode" >
+        <div class="r-title">{{research.title}}</div>
+        <div class="r-abstract">
+            <h5>ABSTRACT</h5>
+            <p>...</p>
+        </div>
+        <div class="r-intro">
+            <h5>1. INTRODUCCION</h5>
+            <p>
+                <span>[Contexto]</span>{{research.context}}.
+                <span>[Antecedentes]</span> Los antecedentes revisados muestran que {{research.antecedents_summary}}. 
+                <span>[Problema]</span> Sin embargo, {{research.problem_afirmative}}.
+                <span>[Justificacion]</span> Por tanto, {{research.justification}}.
+                <span>[Objetivo]</span> El objetivo de este estudio es {{research.objective}}. </p>
+            <p>El capitulo 2 explica el marco teorico, el capitul 3, los trabajos relacionados, el capitulo 4 la metodologia, el capitulo 5 los resultados, finalmente, las conclusiones y trabajos futuros.</p>
+        </div>
+
+        <div class="r-background">
+            <h5>TEORIA DE FONDO</h5>
+            <p>...</p>
+        </div>
+        <div>
+            <h5>TRABAJOS RELACIONADOS</h5>
+            <div [innerHTML]="research.relatedWorkParagragh"> </div>
+        </div>
+
+
+        <div >
+            <h5>METODOLOGÍA</h5>
+            <p>{{research.methodology}}</p>
+        </div>
+
+        <div>
+            <h5>RESULTADOS</h5>
+            <p>{{research.results}}</p>
+        </div>
+        <div>
+            <h5>RESULTADOS</h5>
+            <p>{{research.conclusion}}</p>
+        </div>
+
+        <div>
+            <label>Referencias</label>
+            <ul>
+                @for(reference of research.references; track reference.title){
+                    <li>{{reference.authors}}.{{reference.title}}</li>
+                }
+            </ul>
+        </div>
+
+
+    </div>
+    }
+
+    <div style=" color:#aaa; margin:10px">* Los cambios se estan guardando.</div>
+    <div class="actions">
+
+        <div>
+            <mat-button-toggle-group appearance="legacy" [(ngModel)]="viewmode">
+                <mat-button-toggle value="edit">Edicion</mat-button-toggle>
+                <mat-button-toggle value="preview">Preview</mat-button-toggle>
+              </mat-button-toggle-group>
+        </div>
+        <div style="color:#999">&#64;BrianPando</div>
+        <div>
+            <button mat-flat-button color="warn" (click)="exportInPDF()">PDF</button>
+            <button mat-flat-button (click)="shareMyResearch()">Compartir</button>
+        </div>
+    </div>
+</div>

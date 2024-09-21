@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Compartir</h2>
+<mat-dialog-content>
+  <p>Enalce para compartir: <button mat-button (click)="copyLink(data.link)">Copiar</button> </p>
+  <div>{{data.link}}</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">OK</button>
+</mat-dialog-actions>
