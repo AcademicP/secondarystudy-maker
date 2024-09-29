@@ -6,26 +6,26 @@
     overflow: auto;
     background-color: #fafafa;
 }
-table.antecedents{
+table.antecedents, table.phases{
     border-collapse: collapse;
 }
-table.antecedents td{
+table.antecedents td, table.phases td{
    padding:0 3px;
    border:1px solid #999;
 }
-table.antecedents th{
+table.antecedents th, table.phases th{
     background: #efefef;
     padding:2px;
     border-top:1px solid #ccc;
 }
-table.antecedents th.large{
+table.antecedents th.large, table.phases th.large{
     min-width: 250px;
 }
-table.antecedents{
+table.antecedents, table.phases{
     width: 100%;
 }
 
-table.antecedents textarea{
+table.antecedents textarea, table.phases textarea{
     width: 98.5%;
     font-size: 1em;
     margin:0;
@@ -71,3 +71,11 @@ input{
 .r-title{font-size: 2em; text-align: center; padding:30px;}
 .r-intro span{color:#999;}
 /*---*/
+
+.header-1{
+    font-size: 1.5em;
+    text-align: center;
+    border-bottom: 1px dashed #333;
+    margin:0;
+    margin-top:40px;
+}

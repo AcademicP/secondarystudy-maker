@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { Antecedent } from '../models/antecedent.model';
 import { FormsModule } from '@angular/forms'; 
 
@@ -6,12 +6,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import jsPDF from 'jspdf';
 import { Research } from '../models/research.model';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Criteria } from '../models/criteria.model';
+import { Phase } from '../models/phase.model';
+import { Question } from '../models/question.model';
+import { Source } from '../models/source.model';
 
 export interface DialogData {
   link: string;
@@ -26,9 +31,12 @@ export interface DialogData {
 })
 export class ResearchComponent implements OnInit, OnDestroy {
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  @ViewChild('contentToExport', { static: false }) contentToExport!: ElementRef;
+
+  constructor(private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar) {}
 
   private saveInterval: any;
+  selectedCriteria:string="";
 
   research=new Research();
   viewmode='edit';
@@ -58,8 +66,15 @@ export class ResearchComponent implements OnInit, OnDestroy {
   }
 
 
-  
+  addCriteriaToPhase(phase_:Phase){
+    let criteria =  this.research.inclusions.find(e=>e.code == this.selectedCriteria);
+    if(!criteria) criteria = this.research.exclusions.find(e=>e.code == this.selectedCriteria);
+    if(criteria) phase_.criterias.push(new Criteria(criteria.code, criteria.name));
+  }
 
+  addPhase(){
+    this.research.phases.push( new Phase( "Fase "+(this.research.phases.length),[], [...this.research.sources] ) );
+  }
   
   addAntecedentRow(){
     this.research.antecedents.push(new Antecedent('','','','','','',''));
@@ -75,18 +90,62 @@ export class ResearchComponent implements OnInit, OnDestroy {
   }
 
   changeObjective(){
-    this.research.hypothesis= this.remakeHypothesis(this.research.objective, 'objective');
     this.research.problem= this.remakeProblem(this.research.objective, 'objective');
   }
 
-  changeHypothesis(){
-    //this.objective=this.remakeObjective(this.hypothesis, 'hypothesis');
-    //this.problem=this.remakeProblem(this.hypothesis, 'hypothesis');
-  }
 
   changeProblem(){
     this.research.objective=this.remakeObjective(this.research.problem, 'problem');
-    this.research.hypothesis=this.remakeHypothesis(this.research.problem, 'problem');
+  }
+
+  addQuestion(){
+    this.research.questions.push(new Question( "RQ."+ (this.research.questions.length+1)));
+  }
+  addSource(){
+    this.research.sources.push(new Source());
+  }
+
+ 
+
+  addInclusion(){
+    this.research.inclusions.push(new Criteria( "CI."+(this.research.inclusions.length+1) ));
+  }
+  addExclusion(){
+    this.research.exclusions.push(new Criteria( "CE."+(this.research.exclusions.length+1) ));
+  }
+
+  makeBaseQueryString(){
+    const p = this.research.queryString.population.split(",");
+    const i = this.research.queryString.intervention.split(",");
+    const c = this.research.queryString.comparison.split(",");
+    const o = this.research.queryString.outcome.split(",");
+    const co = this.research.queryString.context.split(",");
+    
+    let picoc = p.map( e=> e.trim() ).join(" OR ") ;
+    if(p.length>1) picoc = `(${picoc})`;
+    if(this.research.queryString.intervention) {
+      let data = i.map( e=> e.trim() ).join(" OR ") ;
+      if(i.length>1) data = `(${data})`;
+      picoc += " AND "+data;
+    }
+    if(this.research.queryString.comparison) {
+      let data = c.map( e=> e.trim() ).join(" OR ") ;
+      if(i.length>1) data = `(${data})`;
+      picoc += " AND "+data;
+    }
+    
+    if(this.research.queryString.outcome) {
+      let data = c.map( e=> e.trim() ).join(" OR ") ;
+      if(c.length>1) data = `(${data})`;
+      picoc += " AND "+data;
+    }
+    if(this.research.queryString.context) {
+      let data = co.map( e=> e.trim() ).join(" OR ") ;
+      if(co.length>1) data = `(${data})`;
+      picoc += " AND "+data;
+    }
+
+    this.research.queryString.base=picoc;
   }
 
   remakeProblem(data:string, type:string){
@@ -113,19 +172,31 @@ export class ResearchComponent implements OnInit, OnDestroy {
     
   }
 
-  remakeHypothesis(data:string, type:string){
-    let response = "";
-    switch (type) {
-      case 'problem'://¿[Cual es el grado de] la aceptacion de las herramientas de monitoreo?
-        const regex_= data.match(/¿Cual es el grado de (.*)\?/);
-        response = `${regex_?regex_[1]:''} es alto`;
-        break;
-        case 'objective'://[Determinar el grado de] la aceptacion tecnologia de las herramientas de monitoreo
-        const regex__= data.match(/(\w*)\s(.*)/);
-        response = `${regex__?regex__[2]:''} es alto`;
-        break;
-    }
-    return response;
+  save(){
+    localStorage.setItem( 'research',JSON.stringify(this.research) );
+    this.snackBar.open('Guardado','',{duration:1000});
+  }
+
+  exportInDOCX() {
+    const content = this.contentToExport.nativeElement.innerHTML;
+    const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
+    const body = '<head><meta charset="utf-8"></head><body>';
+    const footer = '</body></html>';
+
+    const sourceHTML = header + body + content + footer;
+    const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword'
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+
+    // Name the Word file
+    link.download = 'document.doc';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   makeIntroduction(){

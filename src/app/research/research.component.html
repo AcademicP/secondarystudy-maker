@@ -1,9 +1,9 @@
-<div class="wrapper">
+<div class="wrapper" #contentToExport id="content-to-export">
     @if(viewmode=='edit'){
     
         <div class="row">
             <label for="">Titulo:</label>
-            <input type="text" [(ngModel)]="research.title">
+            <input type="text" [(ngModel)]="research.title" placeholder="Mapeo Sistematico de Literatura en ...">
         </div>
         <div>
             <label for="">Tipo: </label>
@@ -13,7 +13,7 @@
             </select>
         </div>
         <div class="edit-block">
-            <h5>INTRODUCCION</h5>
+            <h5 class="header-1">INTRODUCCION</h5>
             <div class="row-flex">
                 <div><label for="">Contexto </label>
                     <span> (Importancia del tema, estadisticas, beneficios, desventajas, otros)</span>
@@ -88,92 +88,160 @@
         </div>
         <br /><br />
         <div class="edit-block">
+            <h5  class="header-1">METODOLOGIA </h5>
             <div class="row-flex">
-                <div>
-                    <label>Metodología </label>
-                    <span>(Defina las preguntas de investigación, la cadena de busqueda, las fuentes da datos, los criterios de inclusion y exclusion, y las fasees de aplciacion. )</span>
-                </div>
-                <br>
                 <div>
                     <label for="">Preguntas de Investigación </label>
                     <span>(Preguntas de investigacion bibliometricas: ¿Quienes son los autores que mas publican?, ¿En que revistas se han publicado?, ¿Como ha sido la evolucion de publicacion a lo largo de los años?  y preguntas especificas: ¿Cuales son las herramientas mas estudiadas? ¿Cuales son los desafios encontrados? )</span>
                 </div>
+                <br>
 
-                <ul>
-                    <li>RQ1. <input type="text"> </li> <button>Agregar</button>
+                <ul style="padding:0;margin:0;">
+                    @for(question of research.questions; track $index){
+                        <li style="display: flex; align-items: stretch;">{{question.code}}. <input type="text" [(ngModel)]="question.name" style="width: 100%;"> ?</li> 
+                    }
+                    
                 </ul>
+                <br>
+                <div style="text-align: center;"><button (click)="addQuestion()"  mat-flat-button class="small">Agregar Pregunta</button></div>
 
+                <br>
                 <div>
                     <label for="">Cadena de Busqueda </label>
                     <span> (Se aplica la tecnica PICOC)</span>
                 </div>
+                <br>
 
                 <div>
-                    <label for="">P (Población) (?) </label> <input type="text" placeholder="DevOps">
-                    <label for="">I (Intervencion) (?) </label> <input type="text" placeholder="Testing">
-                    <label for="">C (Comparacion) (?) </label> <input type="text" placeholder="-">
-                    <label for="">O (Resultados) (?) </label> <input type="text" placeholder="Tecnicas">
-                    <label for="">C (Contexto) (?) </label> <input type="text" placeholder="Academico">
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">P (Población): </label> <input type="text" placeholder="DevOps, Development" [(ngModel)]="research.queryString.population" (blur)="makeBaseQueryString()" style="width:100%;">
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">I (Intervencion): </label> <input type="text" placeholder="Testing, QA" [(ngModel)]="research.queryString.intervention" (blur)="makeBaseQueryString()" style="width:100%;">
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">C (Comparacion):</label> <input type="text" placeholder="-" [(ngModel)]="research.queryString.comparison" (blur)="makeBaseQueryString()" style="width:100%;">
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">O (Resultados): </label> <input type="text" placeholder="Tecnicas" [(ngModel)]="research.queryString.outcome" (blur)="makeBaseQueryString()" style="width:100%;">
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">C (Contexto): </label> <input type="text" placeholder="Academico" [(ngModel)]="research.queryString.context" (blur)="makeBaseQueryString()" style="width:100%;" >
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">Cadena Base: </label> <div style="width: 100%; padding: 10px 0; font-size:1.2em; font-weight: bold;">{{ research.queryString.base  }}</div>
+                    </div>
                 </div>
 
+                <br>
                 <div>
                     <label for="">Fuentes de datos </label>
                     <span> (Las librerias de donde aplicara la cadena busqueda: IEEE Xplorer, Scopus, WebOfScience, ACM, SpringerLink, Francis Tayler, etc )</span>
                 </div>
-
-                <ul>
-                    <li> <input type="text" placeholder="IEEE Xplorer"> </li> <button>Agregar</button>
+                <br>
+                <ul style="padding:0;margin:0;">
+                    @for(source of research.sources; let i = $index; track $index){
+                        <li style="display: flex; align-items: stretch;"> {{$index+1}}. <input type="text" [(ngModel)]="source.name" placeholder="IEEE Xplore"> </li> 
+                    }
                 </ul>
+                <br>
+                <div style="padding-left: 10px;">
+                    <button (click)="addSource()"  mat-flat-button class="small">Agregar Fuente</button>
+                </div>
 
                 <div>
                     <label for="">Criterios de Inclusion y Exclusión</label>
                     <span> (Criterios que se aplicaran a cada estudio encontrado) (?)  </span>
                 </div>
 
-                <ul>
-                    <li> CI1. <input type="text" placeholder=""> </li> <button>Agregar</button>
+                <ul style="padding:0;margin:5px;">
+                    @for(inc of research.inclusions; let i = $index; track $index){
+                        <li style="display: flex; align-items: stretch;"> {{inc.code}}  <input type="text" [(ngModel)]="inc.name" style="width: 100%;"> </li> 
+                    }
                 </ul>
+                <div style="text-align: center;"><button (click)="addInclusion()"  mat-flat-button class="small">Agregar C. Inclusion</button></div>
 
-                <ul>
-                    <li> CE1. <input type="text" placeholder="trabjo no esta en ingles"> </li> <button>Agregar</button>
+                <ul style="padding:0;margin:5px;">
+                    @for(exc of research.exclusions; let i = $index; track $index){
+                        <li style="display: flex; align-items: stretch;"> {{exc.code}} <input type="text" [(ngModel)]="exc.name" style="width: 100%;"> </li> 
+                    }
+                    
                 </ul>
+                <div style="text-align: center;">
+                    <button (click)="addExclusion()"  mat-flat-button class="small">Agregar C. Exclusion</button>
+                </div>
 
+                <br>
                 <div>
                     <label for="">Fases</label>
                     <span> definir en que fase se aplica cada criterio. </span>
                 </div>
-                <table>
+                <table class="phases">
                     <tr>
-                        <th>Fase 1</th><td> CI1, CE1 </td> <td> <button>Agregar</button> </td>
+                        <th>Fase</th> <th>Criterios</th> <th>Ejecución</th>
                     </tr>
+                    @for(phase of research.phases; track $index){
+                    <tr>
+                            <th>{{phase.name}}</th>
+                            <td> 
+                                @if( phase.name!='Fase 0' ){
+                                    <div style="background-color: #fafafa;">
+                                        <select [(ngModel)]="selectedCriteria">
+                                            @for(criteria of research.inclusions; track $index){
+                                                <option value="{{criteria.code}}">{{criteria.code}}. {{criteria.name}}</option>
+                                            }
+                                            @for(criteria of research.exclusions; track $index){
+                                                <option value="{{criteria.code}}">{{criteria.code}}. {{criteria.name}}</option>
+                                            }
+                                        </select>
+                                        <button (click)="addCriteriaToPhase(phase)">Asignar</button>
+                                    </div>
+                                }
+                                
+                                @for( criteria of phase.criterias; track $index){
+                                    <div style="padding:5px;"> + {{criteria.code}}. {{criteria.name}}  </div>
+                                } 
+                                </td>
+                                <td style="display: flex;">
+                                        @for(source_ of phase.sources; track $index){
+                                            <div>
+                                                <div style="padding:3px; font-weight: bold;">{{source_.name}}</div>
+                                                <div style="text-align: center;"><input type="text" [(ngModel)]="source_.count" style="max-width:50px; text-align: center;"></div>
+                                            </div>
+                                       }
+                                    
+                                </td>
+                            </tr>
+                        }
                 </table>
+                <button (click)="addPhase()" mat-flat-button class="small">Agregar Fase</button>
 
+                
             </div>
 
+            <h5 class="header-1">RESULTADOS Y DISCUSIONES</h5>
+
             <div class="row-flex">
-                <div>
-                    <label>Resultados y discusión </label>
-                    <span>(Explique los resultados incluyendo discusiones con sus antecedente.)</span>
-                </div>
+                @for( q of research.questions; track $index ){
+                    <div>
+                        <h5 style="margin:0; padding:4px">{{q.code}}. {{q.name}}?</h5>
+                        <textarea [(ngModel)]="q.answer"></textarea>
+                    </div>
+                }
+                <h5>Sintesis de Resultados</h5>
                 <textarea [(ngModel)]="research.results"></textarea>
             </div>
+            <h5 class="header-1">CONCLUSIONES</h5>
             <div class="row-flex">
-                <div>
-                    <label>Conclusiones </label>
-                    <span>(Explique las conclusiones de su trabajo)</span>
-                </div>
                 <textarea [(ngModel)]="research.conclusion"></textarea>
             </div>
+            <h5 class="header-1">TRABAJOS FUTUROS</h5>
+            
             <div class="row-flex">
-                <div>
-                    <label>Trabajos Futuros </label>
-                    <span>(Redacte los siguientes trabajos que se pueden realizar para continuar con su investigación.)</span>
-                </div>
                 <textarea [(ngModel)]="research.futurework"></textarea>
             </div>
-
+            <h5 class="header-1">REFERENCIAS</h5>
             <div class="row-flex">
-                <label>Referencias</label>
                 <ul>
                     @for(reference of research.references; track reference.title){
                         <li>{{reference.authors}}.{{reference.title}}</li>
@@ -183,60 +251,6 @@
         </div>
 
     }
-    @else{
-    <div id="contentToConvert" class="preview-mode" >
-        <div class="r-title">{{research.title}}</div>
-        <div class="r-abstract">
-            <h5>ABSTRACT</h5>
-            <p>...</p>
-        </div>
-        <div class="r-intro">
-            <h5>1. INTRODUCCION</h5>
-            <p>
-                <span>[Contexto]</span>{{research.context}}.
-                <span>[Antecedentes]</span> Los antecedentes revisados muestran que {{research.antecedents_summary}}. 
-                <span>[Problema]</span> Sin embargo, {{research.problem_afirmative}}.
-                <span>[Justificacion]</span> Por tanto, {{research.justification}}.
-                <span>[Objetivo]</span> El objetivo de este estudio es {{research.objective}}. </p>
-            <p>El capitulo 2 explica el marco teorico, el capitul 3, los trabajos relacionados, el capitulo 4 la metodologia, el capitulo 5 los resultados, finalmente, las conclusiones y trabajos futuros.</p>
-        </div>
-
-        <div class="r-background">
-            <h5>TEORIA DE FONDO</h5>
-            <p>...</p>
-        </div>
-        <div>
-            <h5>TRABAJOS RELACIONADOS</h5>
-            <div [innerHTML]="research.relatedWorkParagragh"> </div>
-        </div>
-
-
-        <div >
-            <h5>METODOLOGÍA</h5>
-            <p>{{research.methodology}}</p>
-        </div>
-
-        <div>
-            <h5>RESULTADOS</h5>
-            <p>{{research.results}}</p>
-        </div>
-        <div>
-            <h5>RESULTADOS</h5>
-            <p>{{research.conclusion}}</p>
-        </div>
-
-        <div>
-            <label>Referencias</label>
-            <ul>
-                @for(reference of research.references; track reference.title){
-                    <li>{{reference.authors}}.{{reference.title}}</li>
-                }
-            </ul>
-        </div>
-
-
-    </div>
-    }
 
     <div style=" color:#aaa; margin:10px">* Los cambios se estan guardando.</div>
     <div class="actions">
@@ -244,13 +258,12 @@
         <div>
             <mat-button-toggle-group appearance="legacy" [(ngModel)]="viewmode">
                 <mat-button-toggle value="edit">Edicion</mat-button-toggle>
-                <mat-button-toggle value="preview">Preview</mat-button-toggle>
               </mat-button-toggle-group>
         </div>
         <div style="color:#999">&#64;BrianPando</div>
         <div>
-            <button mat-flat-button color="warn" (click)="exportInPDF()">PDF</button>
-            <button mat-flat-button (click)="shareMyResearch()">Compartir</button>
+            <button mat-flat-button (click)="exportInDOCX()">WORD</button>
+            <button mat-flat-button (click)="save()">Guardar</button>
         </div>
     </div>
 </div>
