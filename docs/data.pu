@@ -9,26 +9,70 @@ object Antecedent{
   public year: string
 }
 
-object Research{
-  public title:string
-  public context:string
-  public antecedents_summary:string
-  public problem_afirmative:string
-  public justification:string
-  public antecedents:Antecedent[]
-  public type:string
-  public objective:string
-  public problem:string
-  public hypothesis:string
-  public methodology:string
-  public results:string
-  public conclusion:string
-  public futurework:string
-  public introduction:string
-  public relatedWorkParagragh:string
-  public references:Antecedent[]
+object Criteria{
+  public code:string,
+  public name:string,
 }
 
-Research - Antecedent
 
+object Phase{
+  public name: string,
+  public criterias:Criteria[],
+  public sources:Source[]
+}
+
+object QueryString{
+  public population: string,
+  public intervention: string,
+  public comparison: string,
+  public outcome: string,
+  public context: string,
+  public base: string,
+}
+
+object Question{
+  public code:string,
+  public name:string,
+  public answer:string,
+}
+
+object Source{
+  public code:string,
+  public name:string,
+  public count:number,
+}
+
+object Research{
+  public title:string,
+      public context: string,
+      public antecedents_summary: string,
+      public problem_afirmative: string,
+      public justification: string,
+      public antecedents:Antecedent[],
+      public type: string,
+      public objective: string,
+      public problem: string,
+      public methodology: string,
+      public results: string,
+      public conclusion: string,
+      public futurework: string,
+      public introduction: string,
+      public relatedWorkParagragh:string,
+      public references:Antecedent[],
+      public questions:Question[],
+      public sources:Source[],
+      public queryString:QueryString,
+      public inclusions:Criteria[],
+      public exclusions:Criteria[],
+      public phases:Phase[]=[]
+}
+
+Phase -- Criteria
+Phase - Source
+Research -- Antecedent
+Research -- Question
+Research -- Source
+Research -- QueryString
+Research -- Phase
+Research -- Criteria
 @enduml

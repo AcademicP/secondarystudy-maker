@@ -1,4 +1,4 @@
-<div class="wrapper" #contentToExport id="content-to-export">
+<div class="wrapper">
     @if(viewmode=='edit'){
     
         <div class="row">
@@ -36,13 +36,7 @@
                 
                 <textarea [(ngModel)]="research.objective" (blur)="changeObjective()"></textarea>    
             </div>
-            <div class="row-flex">
-                <div>
-                    <label for="">Problema </label>
-                    <span>(* Actualiza automaticamente al objetivo e hipotesis)</span>
-                </div>
-                <textarea [(ngModel)]="research.problem" (blur)="changeProblem()"></textarea>    
-            </div>
+          
             <div class="row-flex">
                 <div>
                     <label for="">Justificacion </label>
@@ -231,6 +225,8 @@
                 <h5>Sintesis de Resultados</h5>
                 <textarea [(ngModel)]="research.results"></textarea>
             </div>
+
+
             <h5 class="header-1">CONCLUSIONES</h5>
             <div class="row-flex">
                 <textarea [(ngModel)]="research.conclusion"></textarea>
@@ -250,7 +246,135 @@
             </div>
         </div>
 
-    }
+    }    @else{
+        <div  #contentToExport id="content-to-export" class="preview-mode" >
+            <div class="r-title">{{research.title}}</div>
+            <div class="r-abstract">
+                <h5>ABSTRACT</h5>
+                <p>...</p>
+            </div>
+            <div class="r-intro">
+                <h5>1. INTRODUCCION</h5>
+                <p>
+                    <span>[Contexto]</span>{{research.context}}.
+                    <span>[Antecedentes]</span> Los antecedentes revisados muestran que {{research.antecedents_summary}}. 
+                    <span>[Problema]</span> Sin embargo, {{research.problem_afirmative}}.
+                    <span>[Justificacion]</span> Por tanto, {{research.justification}}.
+                    <span>[Objetivo]</span> El objetivo de este estudio es {{research.objective}}. </p>
+                <p>El capitulo 2 explica el marco teorico, el capitul 3, los trabajos relacionados, el capitulo 4 la metodologia, el capitulo 5 los resultados, finalmente, las conclusiones y trabajos futuros.</p>
+            </div>
+    
+            <div class="r-background">
+                <h5>TEORIA DE FONDO</h5>
+                <p>...</p>
+            </div>
+            <div>
+                <h5>TRABAJOS RELACIONADOS</h5>
+                <div [innerHTML]="research.relatedWorkParagragh"> </div>
+            </div>
+    
+    
+            <div >
+                <h5>METODOLOGÍA</h5>
+                <p>{{research.methodology}}</p>
+
+                <h5>Preguntas de Investigación.</h5>
+                <ul style="padding:0;margin:0;">
+                    @for(question of research.questions; track $index){
+                        <li style="display: flex; align-items: stretch;">{{question.code}}. {{question.name}}?</li> 
+                    }
+                    
+                </ul>
+                
+                <h5>Cadena de Busqueda.</h5>
+                <div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">P (Población): </label> {{research.queryString.population||'-'}}
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">I (Intervencion): </label> {{research.queryString.intervention||'-'}}
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">C (Comparacion):</label> {{research.queryString.comparison||'-'}}
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">O (Resultados): </label> {{research.queryString.outcome||'-'}}
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">C (Contexto): </label> {{research.queryString.context||'-'}}
+                    </div>
+                    <div style="display: flex; align-items: stretch;">
+                        <label for="" style=" width: 180px;">Cadena Base: </label> <div style="width: 100%; padding: 10px 0;">{{ research.queryString.base  }}</div>
+                    </div>
+                </div>
+
+                <div>
+                    <p>Esta cadena se aplicá a las fuentes de busqueda 
+                        @for(source of research.sources; let i = $index; track $index){
+                        <span>{{source.name}}</span> 
+                        }</p>
+                </div>
+
+                <h5>Fases</h5>
+
+                <table class="phases">
+                    <tr>
+                        <th>Fase</th> <th>Criterios</th> <th>Ejecución</th>
+                    </tr>
+                    @for(phase of research.phases; track $index){
+                    <tr>
+                            <th>{{phase.name}}</th>
+                            <td> 
+                                
+                                @for( criteria of phase.criterias; track $index){
+                                    <div style="padding:5px;"> + {{criteria.code}}. {{criteria.name}}  </div>
+                                } 
+                                </td>
+                                <td style="display: flex;">
+                                        @for(source_ of phase.sources; track $index){
+                                            <div>
+                                                <div style="padding:3px; font-weight: bold;">{{source_.name}}</div>
+                                                <div style="text-align: center;">{{source_.count}}</div>
+                                            </div>
+                                       }
+                                    
+                                </td>
+                            </tr>
+                        }
+                </table>
+
+            </div>
+
+            
+
+    
+            <div>
+                <h5>RESULTADOS</h5>
+                @for( q of research.questions; track $index ){
+                    <div>
+                        <h5 style="margin:0; padding:4px">{{q.code}}. {{q.name}}?</h5>
+                        <p>{{q.answer}}</p>
+                    </div>
+                }
+                <p>{{research.results}}</p>
+            </div>
+            <div>
+                <h5>CONCLUSIONES</h5>
+                <p>{{research.conclusion}}</p>
+            </div>
+    
+            <div>
+                <label>Referencias</label>
+                <ul>
+                    @for(reference of research.references; track reference.title){
+                        <li>{{reference.authors}}.{{reference.title}}</li>
+                    }
+                </ul>
+            </div>
+    
+    
+        </div>
+        }
 
     <div style=" color:#aaa; margin:10px">* Los cambios se estan guardando.</div>
     <div class="actions">
@@ -258,10 +382,12 @@
         <div>
             <mat-button-toggle-group appearance="legacy" [(ngModel)]="viewmode">
                 <mat-button-toggle value="edit">Edicion</mat-button-toggle>
+                <mat-button-toggle value="preview">Preview</mat-button-toggle>
               </mat-button-toggle-group>
         </div>
         <div style="color:#999">&#64;BrianPando</div>
         <div>
+            <button mat-flat-button color="warn" (click)="exportInPDF()">PDF</button>
             <button mat-flat-button (click)="exportInDOCX()">WORD</button>
             <button mat-flat-button (click)="save()">Guardar</button>
         </div>

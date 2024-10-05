@@ -1,30 +1,28 @@
-<h1 style="text-align:center;">MEMORIA DESCRIPTIVA <br /> ResearchMaker</h1>
+<h1 style="text-align:center;">MEMORIA DESCRIPTIVA <br /> SecondaryStudyMaker</h1>
 
 ## CAMPO DE APLICACION
 
-<p style="text-align:justify;">El sistema es una aplicacion que permite armar la estructura de una investigacion cientifica para novatos en la investigación. Esta aplicacion esta pensada para estudiantes de pregrado en las carreras de Informática y afines, donde se realiazan investigaciones aplicadas.</p>
+<p style="text-align:justify;">El sistema es una aplicacion que permite armar la estructura de una investigacion cientifica de tipo estudio secundario para novatos en la investigación. Esta aplicacion esta pensada para estudiantes de pregrado en las carreras de Informática y afines, donde se realizan estudios secundarios de tipo Mapeo Sistemático de Literatura o Revisión Sistemática de Literatura.</p>
 
 ## ANTECEDENTES DEL SOFTWARE
 
-<p style="text-align:justify;">Muchos estudiantes de pregrado se encuentrado con el dilema de la generacion de sus proyectos de tesis o la ejecución de esta. Por tanto, cuando un estudiante ya tiene la idea de sus investigación, esta aplicación le ayuda a usar una estructura de su documento que le permitirá olvidarse de la estructura y concnetrarse pensar en las iniciativas para realizar la investigación.</p>
+<p style="text-align:justify;">Muchos estudiantes de pregrado se encuentran con el dilema de la generación del estado de arte de un tema para investigación. Por tanto, esta aplicación le ayuda a usar una estructura de su documento que le permitirá olvidarse de la estructura y concnetrarse pensar en las iniciativas para realizar el estudio secundario.</p>
 
 ## OBJETIVOS DEL SOFTWARE
-<p style="text-align:justify;">Guiar en la elaboracion del proyecto de tesis o de un artículo cientifico.</p>
+<p style="text-align:justify;">Guiar en la elaboracion de un estudio secundario usando la tecnica de mapeo o de revisión sistemática de literatura.</p>
 
 ## FUNCIONALIDAD DEL SOFTWARE
 <p style="text-align:justify;">
 
-* Sincronizacion Objetivo, Problema, Hipotesis.- Permite al definir un objetivo, auto sugerir el problema y la hipotesis en caso la investigación tenga hipotesis.
 
 * Definición de la introducción.- Mediante partes claves e identificadas el usuario llena estas partes y la aplicación genera el borrador de la introducción.
 
 * Tabla de Antecedentes.-  Permite evidenciar el analisis de los atecedentes, asi como elaborar la redacción de los antecedentes del estudio.
 
-* Metodologia y ejecuión de la investigación.-  Si el usuario considera tambien puede narrar las secciones de Metodologia, Resultados, Conclusiones y trabajos futuros.
+* Metodologia y ejecuión de la investigación.-  El usuario debe llenar las preguntas de investigación cadena de busqueda, fuentes de datos y la aplicacion de criterios de inclusión y exclusión.
 
-* Exportar a PDF.- Permite al usuario, generar un documento en formato PDF con todo el contenido de los ingresados.
+* Exportar a PDF o Word.- Permite al usuario, generar un documento en formato PDF o Word con todo el contenido del estudio.
 
-* Compartir.- Permite al usuario, mediante un enlace, copiar y compartir el documento a otros usuarios. 
 
 * Cambios de modo de visualización.- Permite al usuario, visualizar tanto el modo Edicion, como el modo vista previa.
 </p>
@@ -39,7 +37,7 @@
 <p style="text-align:justify;">El software está preparado para funcionar en cualquier dispositivo, pc, mobile, tabletas siempre y cuando se cuente con internet en el dispositivo. Al ser una aplicacion Frontend, no cuenta con una base de datos compleja, sin embargo se registran en los almacenamientos del navegador los siguientes datos:</p>
 
 <p style="text-align:center;">
-<img src="docs/data.png"/>
+<img src="docs/img/data.png"/>
 </p>
 
 <p style="text-align:justify;">
@@ -47,8 +45,10 @@ El sistema tiene un despliegue que se basa en el siguiente diagrama:
 </p>
 
 <p style="text-align:center">
-<img src="docs/deploy.png"/>
+<img src="docs/img/deploy.png"/>
 </p>
 
-<p style="text-align:justify;">Para desarrollo, debe usar el comando "npm install" para las dependencias y  debe correr ng serve. Para correr la aplicación en producción, Debe esta desplegado en un sistema CDN como cloudflare u otros parecidos.</p>
+<p style="text-align:justify;">Para desarrollo, debe usar el comando "npm install" para las dependencias y  debe correr "ng serve". </p>
+<p>
+Para correr la aplicación en producción, Debe esta desplegado en un sistema CDN como cloudflare u otros parecidos.</p>
 <p>Para desplegar en github pages usa el las librerias gh-pages: ng deploy --base-href=/secondarystudy-maker/</p>

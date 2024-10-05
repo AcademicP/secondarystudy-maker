@@ -1,10 +1,10 @@
 @startuml
 
 node PC{
-[Browser]
+[Browser] #fff
 }
 node Frontend_Server{
-component ResearchMakerFrontend_Angular{
+component SecondaryStudyMakerFrontend_Angular{
   [angularCode]
   database LocalStorage
 }

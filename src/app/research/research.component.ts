@@ -1,3 +1,5 @@
+declare let html2pdf: any;
+
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { Antecedent } from '../models/antecedent.model';
 import { FormsModule } from '@angular/forms'; 
@@ -42,17 +44,9 @@ export class ResearchComponent implements OnInit, OnDestroy {
   viewmode='edit';
 
   ngOnInit():void{
-
-    //verificar r
-    this.route.queryParamMap.subscribe(params => {
-      const r_ = params.get('r'); 
-      if( r_ ) {
-        this.research=JSON.parse(localStorage.getItem('research')||'{}'); 
-        localStorage.setItem('research',JSON.stringify(this.research));
-        this.router.navigate(['/']);
-      }
-    });
-
+    this.research=JSON.parse(localStorage.getItem('research')||'{}'); 
+    localStorage.setItem('research',JSON.stringify(this.research));
+     this.router.navigate(['/']);
     this.saveInterval = setInterval(() => {
       localStorage.setItem('research',JSON.stringify(this.research));
     }, 30000); 
@@ -64,7 +58,6 @@ export class ResearchComponent implements OnInit, OnDestroy {
       clearInterval(this.saveInterval);
     }
   }
-
 
   addCriteriaToPhase(phase_:Phase){
     let criteria =  this.research.inclusions.find(e=>e.code == this.selectedCriteria);
@@ -79,6 +72,7 @@ export class ResearchComponent implements OnInit, OnDestroy {
   addAntecedentRow(){
     this.research.antecedents.push(new Antecedent('','','','','','',''));
     this.research.references = this.research.antecedents;
+    this.makeRelatedWorkParagraph();
   }
 
   makeRelatedWorkParagraph(){
@@ -90,13 +84,13 @@ export class ResearchComponent implements OnInit, OnDestroy {
   }
 
   changeObjective(){
-    this.research.problem= this.remakeProblem(this.research.objective, 'objective');
+    //this.research.problem= this.remakeProblem(this.research.objective, 'objective');
   }
 
 
-  changeProblem(){
+  /*changeProblem(){
     this.research.objective=this.remakeObjective(this.research.problem, 'problem');
-  }
+  }*/
 
   addQuestion(){
     this.research.questions.push(new Question( "RQ."+ (this.research.questions.length+1)));
@@ -106,7 +100,6 @@ export class ResearchComponent implements OnInit, OnDestroy {
   }
 
  
-
   addInclusion(){
     this.research.inclusions.push(new Criteria( "CI."+(this.research.inclusions.length+1) ));
   }
@@ -148,19 +141,19 @@ export class ResearchComponent implements OnInit, OnDestroy {
     this.research.queryString.base=picoc;
   }
 
-  remakeProblem(data:string, type:string){
+  /*remakeProblem(data:string, type:string){
     let response = "";
     switch (type) {
-      case 'objective'://[Determinar el grado de] la aceptacion tecnologia de las herramientas de monitoreo
+      case 'objective':
         const regex_= data.match(/(\w*)\s(.*)/);
         response = `¿Cual es el grado de ${regex_?regex_[2]:''}?`;
         break;
     }
     return response;
    
-  }
-  remakeObjective(data:string, type:string){
+  }*/
 
+  /*remakeObjective(data:string, type:string){
     let response = "";
     switch (type) {
       case 'problem'://¿[Cual es el grado de] la aceptacion de las herramientas de monitoreo?
@@ -169,57 +162,58 @@ export class ResearchComponent implements OnInit, OnDestroy {
         break;
     }
     return response;
-    
-  }
+  }*/
 
   save(){
-    localStorage.setItem( 'research',JSON.stringify(this.research) );
+    localStorage.setItem('research',JSON.stringify(this.research) );
     this.snackBar.open('Guardado','',{duration:1000});
   }
 
   exportInDOCX() {
-    const content = this.contentToExport.nativeElement.innerHTML;
-    const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
-    const body = '<head><meta charset="utf-8"></head><body>';
-    const footer = '</body></html>';
+    this.viewmode='preview';
 
-    const sourceHTML = header + body + content + footer;
-    const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword'
-    });
+    setTimeout(()=>{
+      const content = this.contentToExport.nativeElement.innerHTML;
+      const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
+      const body = '<head><meta charset="utf-8"></head><body>';
+      const footer = '</body></html>';
 
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
+      const sourceHTML = header + body + content + footer;
+      const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword'
+      });
 
-    // Name the Word file
-    link.download = 'document.doc';
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      link.download = 'research.doc';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },1000);
   }
 
   makeIntroduction(){
     this.research.introduction=`${this.research.context}. 
-    Los antecedentes revisados muestran que ${this.research.antecedents_summary}. 
-    Sin embargo, ${this.research.problem_afirmative}.
+    Los antecedentes revisados muestran que ${this.research.antecedents_summary}.
     Por tanto, ${this.research.justification}.
     El objetivo de este estudio es ${this.research.objective}.
     El capitulo 2 explica el marco teorico, el capitul 3, los trabajos relacionados, el capitulo 4 la metodologia, el capitulo 5 los resultados, finalmente, las conclusiones y trabajos futuros.`;
   }
 
+
   exportInPDF(){
+    const font="Times New Roman";
     let pdf = new jsPDF('p', 'mm', 'a4'); 
     let y=10;
     const fontSize = 12;
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const marginLeft=10;
-    const maxWidth = 180;
+    const marginLeft=20;
+    const maxWidth = 240;
     const lineHeight = fontSize - 5;
-    let lines: string[]=[];
+    let lines: string[][]=[];
 
     this.makeIntroduction();
-
 
     /*pdf.setFontSize(16);
     pdf.setFont("Times New Roman", "bold");
@@ -229,50 +223,134 @@ export class ResearchComponent implements OnInit, OnDestroy {
       y += lineHeight;
     });*/
     
-    pdf.setFont("Times New Roman", "normal");
+    //pdf.setFont(font, "normal");
     let lines_ = pdf.splitTextToSize(this.research.title, maxWidth);
-    lines_.forEach( (e:string)=>{ lines.push(e) });
-    lines.push('ABSTRACT');
-    lines.push('...');
-    lines.push('INTRODUCCION');
+    lines_.forEach( (e:string)=>{ lines.push([e,'bold','14']) });
+    lines.push([""]);
+    lines.push(['ABSTRACT','bold']);
+    lines.push(['...']);
+    lines.push([""]);
+    lines.push(['INTRODUCCION','bold']);
 
     lines_ = pdf.splitTextToSize(this.research.introduction, maxWidth);
-    lines_.forEach( (e:string)=>{ lines.push(e) });
-    lines.push('TEORIA DE FONDO');
-    lines.push('...');
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
 
-    lines.push('TRABAJOS RELACIONADOS');
+    lines.push(['...']);
+    lines.push([""]);
+   
+    lines.push(['TRABAJOS RELACIONADOS','bold']);
+  
     lines_ = pdf.splitTextToSize(this.research.relatedWorkParagragh, maxWidth);
-    lines_.forEach( (e:string)=>{ lines.push(e) });
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+    lines.push([""]);
 
-    lines.push('METODOLOGIA');
+    lines.push(['METODOLOGIA','bold']);
+    lines.push([""]);
+    
+    lines.push(['Preguntas de Investigación', 'bold']);
+    this.research.questions.forEach(q => {
+      lines_ = pdf.splitTextToSize(`${q.code}. ${q.name}`, maxWidth);
+      lines_.forEach( (e:string)=>{ lines.push([e]) });
+    });
+    lines.push([""]);
+    lines.push(['Cadena de Busqueda','bold']);
+
+    lines_ = pdf.splitTextToSize(`(P): ${this.research.queryString.population||'-'}`, maxWidth);
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+
+    lines_ = pdf.splitTextToSize(`(I): ${this.research.queryString.intervention||'-'}`, maxWidth);
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+
+    lines_ = pdf.splitTextToSize(`(C): ${this.research.queryString.comparison||'-'}`, maxWidth);
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+
+    lines_ = pdf.splitTextToSize(`(O): ${this.research.queryString.outcome||'-'}`, maxWidth);
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+    lines_ = pdf.splitTextToSize(`(C): ${this.research.queryString.context||'-'}`, maxWidth);
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+
+    lines_ = pdf.splitTextToSize(`Cadena Base: ${this.research.queryString.base}`, maxWidth);
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+
+
+    lines.push([""]);
+    lines_ = pdf.splitTextToSize("Esta cadena se aplicá a las fuentes de busqueda "+ this.research.sources.map(e=>e.name).join(','), maxWidth);
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+    lines.push([""]);
+   
+    lines.push(['Criterios de Inclusion y Exclusion', 'bold']);
+    this.research.inclusions.forEach(e=>{
+      lines_ = pdf.splitTextToSize(`${e.code}. ${e.name}`, maxWidth);
+      lines_.forEach( (e:string)=>{ lines.push([e]) });
+    });
+    this.research.exclusions.forEach(e=>{
+      lines_ = pdf.splitTextToSize(`${e.code}. ${e.name}`, maxWidth);
+      lines_.forEach( (e:string)=>{ lines.push([e]) });
+    });
+    lines.push([""]);
+    lines.push(['Fases','bold']);
+    lines.push([""]);
+
+    lines.push(["FASE | TOTAL | CRITERIOS"]);
+
+    this.research.phases.forEach(p=>{
+      let criterias_='';
+      let total_phase = 0;
+      p.criterias.forEach(e=>{
+        criterias_ += e.code+",";
+      });
+      p.sources.forEach(e=>{
+        total_phase += e.count*1;
+      });
+      lines.push([p.name  + " | " + total_phase  + " | "+  criterias_]);
+    });
+    
+
     lines_ = pdf.splitTextToSize(this.research.methodology, maxWidth);
-    lines_.forEach( (e:string)=>{ lines.push(e) });
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+    lines.push([""]);
 
-    lines.push('RESULTADOS Y DISCUSIONES');
+    lines.push(['RESULTADOS Y DISCUSIONES','bold']);
+
+    this.research.questions.forEach(e=>{
+      lines_ = pdf.splitTextToSize(`${e.code}. ${e.name}`, maxWidth);
+      lines_.forEach( (e:string)=>{ lines.push([e,'bold']) });
+
+      lines_ = pdf.splitTextToSize(e.answer, maxWidth);
+      lines_.forEach( (e:string)=>{ lines.push([e]) });
+    })
+    
     lines_ = pdf.splitTextToSize(this.research.results, maxWidth);
-    lines_.forEach( (e:string)=>{ lines.push(e) });
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+    lines.push([""]);
 
-    lines.push('CONCLUSIONES');
+    lines.push(['CONCLUSIONES','bold']);
     lines_ = pdf.splitTextToSize(this.research.conclusion, maxWidth);
-    lines_.forEach( (e:string)=>{ lines.push(e) });
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+    lines.push([""]);
 
-    lines.push('TRABAJOS FUTUROS');
+    lines.push(['TRABAJOS FUTUROS','bold']);
     lines_ = pdf.splitTextToSize(this.research.futurework, maxWidth);
-    lines_.forEach( (e:string)=>{ lines.push(e) });
+    lines_.forEach( (e:string)=>{ lines.push([e]) });
+    lines.push([""]);
 
-    lines.push('REFERENCIAS');
-    this.research.references.forEach((e,i)=>{ lines.push(`[${i+1}] ${e.authors} ${e.title}`);});
+    lines.push(['REFERENCIAS','bold']);
+    this.research.references.forEach((e,i)=>{ lines.push(  pdf.splitTextToSize(`[${i+1}] ${e.authors} ${e.title}` , maxWidth) );});
 
     const pageHeight= pdf.internal.pageSize.getHeight();
     const marginTop=10;
     pdf.setFontSize(fontSize);
+
     lines.forEach((line) => {
       if (y + lineHeight > pageHeight - marginTop) {
         pdf.addPage();
         y = marginTop;
       }
-      pdf.text(line, marginLeft, y);
+      //[texto, fontWeight, fontSize]
+      pdf.setFont(font,line[1]||'normal');
+      const s = Number(line[2])*1;
+      pdf.setFontSize(s||fontSize); 
+      pdf.text(line[0], marginLeft, y);
       y += lineHeight; 
     });
     
