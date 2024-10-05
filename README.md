@@ -1,4 +1,4 @@
-<h1 style="text-align:center;">MEMORIA DESCRIPTIVA <br /> SecondaryStudyMaker</h1>
+<h1 style="text-align:center;">MEMORIA DESCRIPTIVA <br /> Secondary-Study-Maker</h1>
 
 ## CAMPO DE APLICACION
 

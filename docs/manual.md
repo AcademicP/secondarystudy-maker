@@ -1,4 +1,4 @@
-<h1 style="text-align:center">SecondaryStudyMaker<br /> [Manual de Usuario]</h1>
+<h1 style="text-align:center">Secondary-Study-Maker<br /> [Manual de Usuario]</h1>
 <p> Version:1.0 | 05/10/24 | Brian Pando </p>
 
 
