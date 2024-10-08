@@ -18,7 +18,7 @@
                 <div><label for="">Contexto </label>
                     <span> (Importancia del tema, estadisticas, beneficios, desventajas, otros)</span>
                     </div>
-                <textarea [(ngModel)]="research.context"></textarea>    
+                <textarea [(ngModel)]="research.context" rows="5"></textarea>    
             </div>
             <div class="row-flex">
                 <div>
@@ -26,7 +26,7 @@
                     <span>(En una sola frase explicar los antecedentes de la parte inferior)</span>
     
                 </div>
-                <textarea [(ngModel)]="research.antecedents_summary"></textarea>    
+                <textarea [(ngModel)]="research.antecedents_summary" rows="5"></textarea>    
             </div>
             <div class="row-flex">
                 <div>
@@ -34,7 +34,7 @@
                     <span>(*Actualiza automaticamente el problema e hipotesis)</span>
                 </div>
                 
-                <textarea [(ngModel)]="research.objective" (blur)="changeObjective()"></textarea>    
+                <textarea [(ngModel)]="research.objective" (blur)="changeObjective()" rows="5"></textarea>    
             </div>
           
             <div class="row-flex">
@@ -42,7 +42,7 @@
                     <label for="">Justificacion </label>
                     <span> (Escribir 1 linea del por qué seria importante los resultados de este trabajo)</span>
                 </div>
-                <textarea [(ngModel)]="research.justification"></textarea>    
+                <textarea [(ngModel)]="research.justification" rows="5"></textarea>    
             </div>
             
             

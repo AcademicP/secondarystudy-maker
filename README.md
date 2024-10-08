@@ -51,4 +51,4 @@ El sistema tiene un despliegue que se basa en el siguiente diagrama:
 <p style="text-align:justify;">Para desarrollo, debe usar el comando "npm install" para las dependencias y  debe correr "ng serve". </p>
 <p>
 Para correr la aplicación en producción, Debe esta desplegado en un sistema CDN como cloudflare u otros parecidos.</p>
-<p>Para desplegar en github pages usa el las librerias gh-pages: ng deploy --base-href=/secondarystudy-maker/</p>
+<p>Para desplegar en github pages usa el las librerias gh-pages: ng deploy --base-href=/secondarystudy-maker/. Para esto, debe activar en la plataforma de github.com / Settings / Pages. El repo debe ser publico y debe asignar a la rama gh-pages como rama de despliegue, al ejecutar el comando anterior, se deplegara la pagina, al entrar al repo en la parte derecha puede ser los deslpliegues y la ruta de donde esta desplegado, por ejemplo https://academicp.github.io/secondarystudy-maker/</p>

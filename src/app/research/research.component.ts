@@ -44,7 +44,8 @@ export class ResearchComponent implements OnInit, OnDestroy {
   viewmode='edit';
 
   ngOnInit():void{
-    this.research=JSON.parse(localStorage.getItem('research')||'{}'); 
+    const research_=JSON.parse(localStorage.getItem('research')||'{}'); 
+    if(research_.title) this.research=research_;
     localStorage.setItem('research',JSON.stringify(this.research));
      this.router.navigate(['/']);
     this.saveInterval = setInterval(() => {
