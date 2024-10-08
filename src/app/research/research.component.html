@@ -219,7 +219,7 @@
                 @for( q of research.questions; track $index ){
                     <div>
                         <h5 style="margin:0; padding:4px">{{q.code}}. {{q.name}}?</h5>
-                        <textarea [(ngModel)]="q.answer"></textarea>
+                        <textarea [(ngModel)]="q.answer" rows="5"></textarea>
                     </div>
                 }
                 <h5>Sintesis de Resultados</h5>
@@ -229,12 +229,12 @@
 
             <h5 class="header-1">CONCLUSIONES</h5>
             <div class="row-flex">
-                <textarea [(ngModel)]="research.conclusion"></textarea>
+                <textarea [(ngModel)]="research.conclusion" rows="5"></textarea>
             </div>
             <h5 class="header-1">TRABAJOS FUTUROS</h5>
             
             <div class="row-flex">
-                <textarea [(ngModel)]="research.futurework"></textarea>
+                <textarea [(ngModel)]="research.futurework" rows="5"></textarea>
             </div>
             <h5 class="header-1">REFERENCIAS</h5>
             <div class="row-flex">
