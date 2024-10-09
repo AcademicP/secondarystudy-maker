@@ -4,6 +4,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@an
 import { Antecedent } from '../models/antecedent.model';
 import { FormsModule } from '@angular/forms'; 
 
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -27,7 +28,7 @@ export interface DialogData {
 @Component({
   selector: 'research-component',
   standalone: true,
-  imports: [FormsModule, MatButtonModule, MatInputModule,MatIconModule, MatButtonToggleModule],
+  imports: [FormsModule, MatTooltipModule, MatButtonModule, MatInputModule,MatIconModule, MatButtonToggleModule],
   templateUrl: './research.component.html',
   styleUrl: './research.component.css'
 })
@@ -169,6 +170,8 @@ export class ResearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('research',JSON.stringify(this.research) );
     this.snackBar.open('Guardado','',{duration:1000});
   }
+
+  
 
   exportInDOCX() {
     this.viewmode='preview';

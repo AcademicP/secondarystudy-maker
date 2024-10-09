@@ -15,13 +15,13 @@
         <div class="edit-block">
             <h5 class="header-1">INTRODUCCION</h5>
             <div class="row-flex">
-                <div><label for="">Contexto  <mat-icon title="Importancia del tema, estadisticas, beneficios, desventajas, otros" class="help-tag">help</mat-icon>  </label>
+                <div><label for="">Contexto  <mat-icon matTooltip="Importancia del tema, estadisticas, beneficios, desventajas, otros" class="help-tag">help</mat-icon>  </label>
                     </div>
                 <textarea [(ngModel)]="research.context" rows="5"></textarea>    
             </div>
             <div class="row-flex">
                 <div>
-                    <label for="">Resumen de Antecedentes </label> <mat-icon title="En una sola frase explicar los antecedentes de la parte inferior" class="help-tag">help</mat-icon>
+                    <label for="">Resumen de Antecedentes </label> <mat-icon matTooltip="En una sola frase explicar los antecedentes de la parte inferior" class="help-tag">help</mat-icon>
            
     
                 </div>
@@ -38,7 +38,7 @@
             <div class="row-flex">
                 <div>
                     <label for="">Justificacion </label>
-                    <mat-icon title="Escribir 1 linea del por qué seria importante los resultados de este trabajo" class="help-tag">help</mat-icon>
+                    <mat-icon class="help-tag" matTooltip="Escribir 1 linea del por qué seria importante los resultados de este trabajo">help</mat-icon>
              
                 </div>
                 <textarea [(ngModel)]="research.justification" rows="5"></textarea>    
@@ -48,7 +48,13 @@
         </div>
         
         <div style="margin-top:20px">
-            <label>Tabla Antecedentes</label>
+            <label>Tabla Antecedentes <mat-icon matTooltip='Puede usar una palabra clave de su investigacion y agregarle :  AND  (
+                "review of studies"  OR  "structured review"  OR  "systematic review" OR "literature review" OR "literature analysis" OR
+                "in-depth survey" OR "literature survey" OR "meta-analysis" OR "past studies" OR "subject matter expert" OR "analysis of research" OR
+                "empirical body of knowledge" OR "evidence-based software engineering" OR "overview of existing research" OR 
+                "body of published research" OR "study aggregation" OR "study synthesis" OR "critical review" OR "mapping study" OR "literature mapping" 
+                 OR "mapping review" OR "review of research" OR "review of literature"
+               )'>help</mat-icon> </label>
             <table class="antecedents">
                 <thead>
                     <tr>
@@ -85,7 +91,7 @@
             <div class="row-flex">
                 <div>
                     <label for="">Preguntas de Investigación </label>
-                    <mat-icon title="Preguntas de investigacion bibliometricas: ¿Quienes son los autores que mas publican?, ¿En que revistas se han publicado?, ¿Como ha sido la evolucion de publicacion a lo largo de los años?  y preguntas especificas: ¿Cuales son las herramientas mas estudiadas? ¿Cuales son los desafios encontrados?" class="help-tag">help</mat-icon>
+                    <mat-icon matTooltip="Preguntas de investigacion bibliometricas: ¿Quienes son los autores que mas publican?, ¿En que revistas se han publicado?, ¿Como ha sido la evolucion de publicacion a lo largo de los años?  y preguntas especificas: ¿Cuales son las herramientas mas estudiadas? ¿Cuales son los desafios encontrados?" class="help-tag">help</mat-icon>
               
                 </div>
                 <br>
@@ -102,7 +108,7 @@
                 <br>
                 <div>
                     <label for="">Cadena de Busqueda </label>
-                    <mat-icon title="Se aplica la tecnica PICOC" class="help-tag">help</mat-icon>
+                    <mat-icon matTooltip="Se aplica la tecnica PICOC" class="help-tag">help</mat-icon>
                 </div>
                 <br>
 
@@ -130,7 +136,7 @@
                 <br>
                 <div>
                     <label for="">Fuentes de datos </label>
-                    <mat-icon title="Las librerias de donde aplicara la cadena busqueda: IEEE Xplorer, Scopus, WebOfScience, ACM, SpringerLink, Francis Tayler, etc." class="help-tag">help</mat-icon>
+                    <mat-icon matTooltip="Las librerias de donde aplicara la cadena busqueda: IEEE Xplorer, Scopus, WebOfScience, ACM, SpringerLink, Francis Tayler, etc." class="help-tag">help</mat-icon>
        
                 </div>
                 <br>
@@ -146,7 +152,7 @@
 
                 <div>
                     <label for="">Criterios de Inclusion y Exclusión</label>
-                    <mat-icon title="Criterios que se aplicaran a cada estudio encontrado" class="help-tag">help</mat-icon>
+                    <mat-icon matTooltip="Criterios que se aplicaran a cada estudio encontrado" class="help-tag">help</mat-icon>
           
                 </div>
 
@@ -170,7 +176,7 @@
                 <br>
                 <div>
                     <label for="">Fases</label>
-                    <mat-icon title="Definir en que fase se aplica cada criterio" class="help-tag">help</mat-icon>
+                    <mat-icon matTooltip="Definir en que fase se aplica cada criterio" class="help-tag">help</mat-icon>
                 </div>
                 <table class="phases">
                     <tr>
