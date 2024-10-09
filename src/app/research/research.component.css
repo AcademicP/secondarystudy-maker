@@ -79,3 +79,13 @@ input{
     margin:0;
     margin-top:40px;
 }
+.help-tag{
+    cursor: help;
+    color:#333;
+    font-size: 1em;
+  }
+
+  .edit-block label{
+    display: inline-block;
+    padding-bottom: 10px;
+  }

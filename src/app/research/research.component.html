@@ -15,15 +15,14 @@
         <div class="edit-block">
             <h5 class="header-1">INTRODUCCION</h5>
             <div class="row-flex">
-                <div><label for="">Contexto </label>
-                    <span> (Importancia del tema, estadisticas, beneficios, desventajas, otros)</span>
+                <div><label for="">Contexto  <mat-icon title="Importancia del tema, estadisticas, beneficios, desventajas, otros" class="help-tag">help</mat-icon>  </label>
                     </div>
                 <textarea [(ngModel)]="research.context" rows="5"></textarea>    
             </div>
             <div class="row-flex">
                 <div>
-                    <label for="">Resumen de Antecedentes </label>
-                    <span>(En una sola frase explicar los antecedentes de la parte inferior)</span>
+                    <label for="">Resumen de Antecedentes </label> <mat-icon title="En una sola frase explicar los antecedentes de la parte inferior" class="help-tag">help</mat-icon>
+           
     
                 </div>
                 <textarea [(ngModel)]="research.antecedents_summary" rows="5"></textarea>    
@@ -31,7 +30,6 @@
             <div class="row-flex">
                 <div>
                     <label for="">Objetivo</label>
-                    <span>(*Actualiza automaticamente el problema e hipotesis)</span>
                 </div>
                 
                 <textarea [(ngModel)]="research.objective" (blur)="changeObjective()" rows="5"></textarea>    
@@ -40,7 +38,8 @@
             <div class="row-flex">
                 <div>
                     <label for="">Justificacion </label>
-                    <span> (Escribir 1 linea del por qué seria importante los resultados de este trabajo)</span>
+                    <mat-icon title="Escribir 1 linea del por qué seria importante los resultados de este trabajo" class="help-tag">help</mat-icon>
+             
                 </div>
                 <textarea [(ngModel)]="research.justification" rows="5"></textarea>    
             </div>
@@ -86,7 +85,8 @@
             <div class="row-flex">
                 <div>
                     <label for="">Preguntas de Investigación </label>
-                    <span>(Preguntas de investigacion bibliometricas: ¿Quienes son los autores que mas publican?, ¿En que revistas se han publicado?, ¿Como ha sido la evolucion de publicacion a lo largo de los años?  y preguntas especificas: ¿Cuales son las herramientas mas estudiadas? ¿Cuales son los desafios encontrados? )</span>
+                    <mat-icon title="Preguntas de investigacion bibliometricas: ¿Quienes son los autores que mas publican?, ¿En que revistas se han publicado?, ¿Como ha sido la evolucion de publicacion a lo largo de los años?  y preguntas especificas: ¿Cuales son las herramientas mas estudiadas? ¿Cuales son los desafios encontrados?" class="help-tag">help</mat-icon>
+              
                 </div>
                 <br>
 
@@ -102,7 +102,7 @@
                 <br>
                 <div>
                     <label for="">Cadena de Busqueda </label>
-                    <span> (Se aplica la tecnica PICOC)</span>
+                    <mat-icon title="Se aplica la tecnica PICOC" class="help-tag">help</mat-icon>
                 </div>
                 <br>
 
@@ -130,7 +130,8 @@
                 <br>
                 <div>
                     <label for="">Fuentes de datos </label>
-                    <span> (Las librerias de donde aplicara la cadena busqueda: IEEE Xplorer, Scopus, WebOfScience, ACM, SpringerLink, Francis Tayler, etc )</span>
+                    <mat-icon title="Las librerias de donde aplicara la cadena busqueda: IEEE Xplorer, Scopus, WebOfScience, ACM, SpringerLink, Francis Tayler, etc." class="help-tag">help</mat-icon>
+       
                 </div>
                 <br>
                 <ul style="padding:0;margin:0;">
@@ -145,7 +146,8 @@
 
                 <div>
                     <label for="">Criterios de Inclusion y Exclusión</label>
-                    <span> (Criterios que se aplicaran a cada estudio encontrado) (?)  </span>
+                    <mat-icon title="Criterios que se aplicaran a cada estudio encontrado" class="help-tag">help</mat-icon>
+          
                 </div>
 
                 <ul style="padding:0;margin:5px;">
@@ -168,7 +170,7 @@
                 <br>
                 <div>
                     <label for="">Fases</label>
-                    <span> definir en que fase se aplica cada criterio. </span>
+                    <mat-icon title="Definir en que fase se aplica cada criterio" class="help-tag">help</mat-icon>
                 </div>
                 <table class="phases">
                     <tr>
